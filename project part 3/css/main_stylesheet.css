@@ -1,0 +1,16 @@
+ul {
+	list-style-type: none; 
+}
+
+li {
+	margin-bottom: 10px;
+}
+
+.index-list {
+	margin-top: 40px;
+}
+
+.center-element-page {
+	margin-top: 2%;
+	margin-left: 5%;
+}

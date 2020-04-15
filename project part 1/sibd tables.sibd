@@ -1,0 +1,94 @@
+---Entities---
+
+medical_device(SERIAL_NO, MANUFACTURER, description)
+
+pan(DOMAIN, phone_no)
+
+patient(CITIZEN_NO)
+
+series_of_data(ID, name, url)
+
+equipment(SERIAL_NO, MANUFACTURER, model)
+
+doctor(CITIZEN_NO, PROFESSIONAL_ID)
+
+elements(URL_INDEX, index)
+
+---ISA---
+
+colected_received(DATA_COLLECTION_OF_TIME)
+
+settings(SERIAL_NO, unit, value)
+	serial_no: FK(medical_device) 
+
+readings(SERIAL_NO, unit, value)
+	serial_no: FK(medical_device)
+
+study(DATE, description)
+
+exam_prescription(DATE, time)
+
+signal(PAIR, URL_INDEX)
+	url_index: FK(elements)
+
+image(2NDPAIR, 1STPOINT, URL_INDEX)
+	url_index: FK(elements)
+
+---Relations---
+
+collects_receives(MANUFACTURER, SERIAL_NO, DATACOLLECTION_OF_TIME)
+	manufacturer, serial_no: FK(medical_device)
+	datacollection_of_time: FK(collected_received)
+
+monitors(DOMAIN, SERIAL_NO, MANUFACTURER)
+	domain: FK(pan)
+	manufacturer, serial_no: FK(medical_device)
+
+wears(CITIZEN_NO, DOMAIN, SERIAL_NO, MANUFACTURER)
+	citizen_no: FK(patient)
+	domain: FK(pan)
+	manufacturer, serial_no: FK(medical_device)
+
+prescribed(TIME, DATE, CITIZEN_NO)
+	citizen_no: FK(patient)
+	time, date: FK(exam_prescription)
+
+performed(CITIZEN_NO, DATE)
+	citizen_no: FK(patient)
+	date: FK(study)
+
+follows(CITIZEN_NO, PROFESSIONAL_ID)
+	citizen_no: FK(patient)
+	professional_id: FK(doctor)
+
+performs(CITIZEN_NO, DATE, PROFESSIONAL_ID)
+	citizen_no: FK(patient)
+	date: FK(study)
+	professional_id: FK(doctor)
+
+made_by(SERIAL_NO, MANUFACTURER, DATE, CITIZEN_NO)
+	serial_no, manufacturer: FK(equipment)
+	date: FK(study)
+	citizen_no: FK(patient)
+
+collects(date, citizen_no, id)
+	date: FK(study)
+	citizen_no: FK(patient)
+	id: FK(series_of_data)
+
+???annotates(PROFESSIONAL_ID, URL_INDEX, PAIR, 1STPOINT, 2NDPOINT)
+	professional_id: FK(doctor)
+	url_index: FK(elements)
+	1stpoint, 2ndpoint: FK(image)
+	pair: FK(signal)
+
+has_image(URL_INDEX, 1STPOINT, 2NDPOINT)
+	url_index: FK(elements)
+	1stpoint, 2ndpair: FK(image)
+
+has_signal(URL_INDEX, PAIR)
+	url_index: FK(elements)
+	pair: FK(signal)
+
+
+
